@@ -1,40 +1,42 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
+#include "template.h"
 
 namespace Tmpl8
 {
-	// -----------------------------------------------------------
-	// Initialize the application
-	// -----------------------------------------------------------
+	const vec2 position = { 100, 100 };
+	struct Foo
+	{
+		vec2 targetPoint;
+		Pixel color;
+	};
+
+	const Foo lineinfo[] = {
+		{ {100 ,100 }	, 0xFFFF0000},
+		{ {0 ,100}		, 0xFF00FF00},
+		{ {50,50}		, 0xFF0000FF},
+	};
+
 	void Game::Init()
 	{
+		
 	}
 	
-	// -----------------------------------------------------------
-	// Close down application
-	// -----------------------------------------------------------
 	void Game::Shutdown()
 	{
 	}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
-
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-		// clear the graphics window
-		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
+		screen->Clear(0x00000000);
+
+		vec2 beginPos = { 50,50 };
+
+		for(const Foo line : lineinfo)
+		{
+			screen->Line(beginPos.x + position.x ,beginPos.y + position.y, line.targetPoint.x + position.x, line.targetPoint.y + position.y, line.color);
+			beginPos = { line.targetPoint.x, line.targetPoint.y };
+		}
+
 	}
 };
