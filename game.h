@@ -9,6 +9,9 @@ public:
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
 	void Shutdown();
+	void DrawI(float speed_x, float speed_y, float i_width, float i_height, int color);
+	void DrawCentredI(float speed_x, float speed_y, float i_width, float i_height, int color);
+	void DrawFatI(float speed_x, float speed_y, float i_width, float i_height, int color, float thickness);
 	void Tick( float deltaTime );
 	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }

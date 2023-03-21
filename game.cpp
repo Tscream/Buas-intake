@@ -1,6 +1,8 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
+#include "iostream"
+
+using namespace std;
 
 namespace Tmpl8
 {
@@ -9,6 +11,9 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		cout<<"Init"<<endl;
+		cout << screen -> GetWidth() << endl;
+
 	}
 	
 	// -----------------------------------------------------------
@@ -18,23 +23,31 @@ namespace Tmpl8
 	{
 	}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
+	void Game::DrawI(const float speed_x, const float speed_y, const float i_width, const float i_height, const int color)
+	{
+		screen->Line(10 + speed_x, 10 + speed_y, 10 + i_width + speed_x, 10 + speed_y, color);
+		screen->Line(10 + i_width / 2 + speed_x, 10 + speed_y, 10 + i_width / 2 + speed_x, 10 + i_height + speed_y, color);
+		screen->Line(10 + speed_x, 10 + i_height + speed_y, 10 + i_width + speed_x, 10 + i_height + speed_y, color);
+	}
+
+	void Game::DrawCentredI(float speed_x, float speed_y, float i_width, float i_height, int color)
+	{
+		const float start_x = screen->GetWidth() / 2 - i_width / 2;
+		const float start_y = screen->GetHeight() / 2 - i_height / 2;
+
+		screen->Line(start_x + speed_x, start_y + speed_y, start_x + i_width + speed_x, start_y + speed_y, color);
+		screen->Line(start_x + i_width / 2 + speed_x, start_y + speed_y, start_x + i_width / 2 + speed_x, start_y + i_height + speed_y, color);
+		screen->Line(start_x + speed_x, start_y + i_height + speed_y, start_x + i_width + speed_x, start_y + i_height + speed_y, color);
+	}
+
+
 
 	// -----------------------------------------------------------
 	// Main application tick function
 	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-		// clear the graphics window
-		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
+		DrawI(0, 0, 100, 200, 0x0000ff);
+		DrawCentredI(0, 0, 100, 200, 0xffffff);
 	}
 };
