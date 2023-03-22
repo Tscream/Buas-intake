@@ -1,6 +1,5 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
 
 namespace Tmpl8
 {
@@ -18,23 +17,28 @@ namespace Tmpl8
 	{
 	}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
+	static Sprite tank(new Surface("assets/aagun.tga"), 36);
 	static int frame = 0;
+
+	static Sprite ball(new Surface("assets/ball.png"), 1);
+
 
 	// -----------------------------------------------------------
 	// Main application tick function
 	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-		// clear the graphics window
 		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
+
+		for (int c = 0; c < 36; c++) //c is the amount of tanks per row (colums)
+		{
+			for (int r = 0; r < 12; r++) //r is the amount of rows
+			{
+				tank.SetFrame(c);
+				tank.Draw(screen, c * 40, r * 40);
+			}
+		}
+
+		ball.DrawScaled(30, 30, 150, 150, screen);
 	}
 };
