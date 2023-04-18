@@ -2,35 +2,23 @@
 #include "surface.h"
 #include "template.h"
 #include "iostream"
+#include <Windows.h>
+
 
 namespace Tmpl8
 {
 	vec2 mousePos;
-	float viewportWidth;
-	float viewportHeight;
 	vec2 cursor;
-
-	//walls
-	float left;
-	float right;
-	float top;
-	float bottom;
 
 	void Game::MouseMove(int x, int y)
 	{
-
 		mousePos.x = mousePos.x + x;
 		mousePos.y = mousePos.y + y;
 		
-		if (mousePos.x > left && mousePos.x < right && mousePos.y > top && mousePos.y < bottom)
+		if (mousePos.x > 0 + cursor.x/2 && mousePos.x < ScreenWidth - cursor.x/2 && mousePos.y > 0 + cursor.y/2 && mousePos.y < ScreenHeight - cursor.y/2)
 		{
 			CursorVisual(mousePos.x, mousePos.y);
 		}
-	}
-
-	void Game::MouseDown(int button)
-	{
-		std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
 	}
 
 	void Game::CursorVisual(float x, float y)
@@ -41,40 +29,29 @@ namespace Tmpl8
 		float yPos2 = y + cursor.y / 2;
 
 		screen->Surface::Bar(xPos1, yPos1, xPos2, yPos2, 0xffffff);
-
 	}
 
-	void Game::DrawViewport()
+	void Game::MouseDown(int button)
 	{
-		//Draw Viewport
-		left = ScreenWidth / 2 - viewportWidth / 2;
-		top = ScreenHeight / 2 - viewportHeight / 2;
-		right = ScreenWidth / 2 + viewportWidth / 2;
-		bottom = ScreenHeight / 2 + viewportHeight / 2;
-
-		screen->Line(left, top, left, bottom, 0xffffff); //right wall
-		screen->Line(right, top, right, bottom, 0xffffff); //right wall
-		screen->Line(left, top, right, top, 0xffffff); //upper wall
-		screen->Line(left, bottom, right, bottom, 0xffffff); //bottom wall
+		std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
 	}
-	void Game::DrawButtons()
-	{
-		Button(viewportWidth/2, 250, 100, 30);
-	}
+	
 
 	void Game::Button(float posx, float posy, float width, float height)
 	{
-		screen->Surface::Bar(left + posx - width/2, top + posy - height/2, left + posx + width/2, top + posy + height/2, 0xffffff);
+		screen->Surface::Bar(posx - width/2, posy - height/2, posx + width/2, posy + height/2, 0xffffff);
 	}
+
+	
+
 
 
 	void Game::Init()
 	{
-		viewportWidth = 250;
-		viewportHeight = 450;
-
 		cursor.x = 20; //visual cursor width
 		cursor.y = 20; //visual cursor height
+		DWORD height = GetSystemMetrics(SM_CYSCREEN);
+		std::cout << height << std::endl;
 	}
 	void Game::Shutdown()
 	{
@@ -82,9 +59,11 @@ namespace Tmpl8
 	}
 	void Game::Tick(float deltaTime)
 	{
+		
 		screen->Clear(0x000000);
-		DrawViewport();
-		DrawButtons();
+		Button(ScreenWidth / 2, 250, 100, 30);
+		Button(ScreenWidth / 2, 300, 100, 30);
+
 	}
 
 	

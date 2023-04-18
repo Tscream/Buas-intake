@@ -10,9 +10,12 @@
 
 #include <cstdlib>
 #include <cstdio>
+//#include <Windows.h> //TODO: Wanneer deze library toe wordt gevoegd krijg ik 20 errors 
 
-constexpr int ScreenWidth = 300; //minimum width = 300px
-constexpr int ScreenHeight = 500; //minimum height = 500px
+//const DWORD height = GetSystemMetrics(SM_CYSCREEN);
+const int ScreenHeight = 500; //minimum height = 500px
+
+const int ScreenWidth = 300; //minimum width = 300px
 // #define FULLSCREEN
 // #define ADVANCEDGL	// faster if your system supports it. Switches SDL2's texture buffer out for OpenGL texture buffer with mappings to CPU Memory. 
 
