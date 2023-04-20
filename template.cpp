@@ -14,6 +14,7 @@
 //#define ADVANCEDGL
 
 #include "game.h"
+#include "visuals.h"
 
 #include <fcntl.h>
 #include <io.h>
