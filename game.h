@@ -7,6 +7,8 @@ class Game
 {
 public:
 	void SetTarget( Surface* surface ) { screen = surface; }
+	void CreateBall(float xpos, float ypos, float radius);
+	void MoveBall();
 	void Init();
 	void Shutdown();
 	void Tick( float deltaTime );

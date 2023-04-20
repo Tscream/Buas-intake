@@ -37,12 +37,26 @@ namespace Tmpl8
 	}
 	
 
-	void Game::Button(float posx, float posy, float width, float height)
+	//void Game::Button(float posx, float posy, float width, float height)
+	//{
+	//	screen->Surface::Bar(posx - width/2, posy - height/2, posx + width/2, posy + height/2, 0xffffff);
+	//}
+
+	static Sprite ball(new Surface("assets/ball.png"), 1);
+
+	void Game::CreateBall(float xpos, float ypos, float radius)
 	{
-		screen->Surface::Bar(posx - width/2, posy - height/2, posx + width/2, posy + height/2, 0xffffff);
+		ball.DrawScaled(xpos, ypos, radius, radius, screen);
+
+		float vx = (7);
+		float vy = (10);
+		float mass = radius / 50;
 	}
 
-	
+	void Game::MoveBall() 
+	{
+		
+	}
 
 
 
@@ -61,8 +75,11 @@ namespace Tmpl8
 	{
 		
 		screen->Clear(0x000000);
-		Button(ScreenWidth / 2, 250, 100, 30);
-		Button(ScreenWidth / 2, 300, 100, 30);
+		//Button(ScreenWidth / 2, 250, 100, 30);
+		//Button(ScreenWidth / 2, 300, 100, 30);
+
+		CreateBall(100, ScreenHeight / 2, 100);
+		
 
 	}
 
