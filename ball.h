@@ -5,23 +5,22 @@ namespace Tmpl8 {
 	class Ball
 	{
 	public:
-		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, float _gravity, Surface* _screen);
+		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float _time);
 		~Ball();
-		/*void CreateBall(float _xpos, float _ypos, float _radius, Surface* _screen);
-		void DisplayBall();*/
-		void DrawLine();
+		void DisplayBall();
 		void MoveBall();
 	private:
-	Surface* screen;
-	float x;
-	float y;
-	float radius;
+		Surface* screen{nullptr};
+		float time;
 
-	float vx;
-	float vy;
-	float mass;
-	float gravity;
-	float resistance = 0.99;
+		float x;
+		float y;
+		float radius;
+		float vx;
+		float vy;
+		float mass;
+		float gravity = 5;
+		float resistance = 0.99;
 	};
 
 };

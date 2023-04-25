@@ -6,9 +6,11 @@
 
 namespace Tmpl8
 {
+	static Sprite ballTexture(new Surface("assets/ball.png"), 1);
+	float ptr;
 
 	// Constructor. This will assign all the values the object needs when you create an instance of this class.
-	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, float _gravity, Surface* _screen)
+	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float _time)
 	{
 		x = _xpos;
 		y = _ypos;
@@ -16,18 +18,22 @@ namespace Tmpl8
 		vx = _vx;
 		vy = _vy;
 		mass = radius / 50;
-		gravity = _gravity;
 		screen = _screen;
+		ptr = _time;
+		
+
 	}
 
 	// The destructor deallocates the resources allocated in the constructor. So basically it frees up the memory taken up by the constructor.
 	Ball::~Ball() {};
 
-	// You can write setters and getters if you want to change your values.
 
-	void Ball::DrawLine()
+
+	void Ball::DisplayBall()
 	{
-		screen->Bar(100, 100, 500, 500, 0x000000);
+		ballTexture.DrawScaled(x, y, radius, radius, screen);
+
+		std::cout << ptr << std::endl;
 	}
 
 	void Ball::MoveBall()
@@ -38,9 +44,9 @@ namespace Tmpl8
 
 		x = x + vx;
 		y = y + vy;
-		if (x > ScreenWidth - 2 * radius)
+		if (x > ScreenWidth - radius)
 		{
-			x = ScreenWidth - 2 * radius;
+			x = ScreenWidth - radius;
 			vx = -vx * resistance;
 		}
 		if (x < 0)
@@ -53,9 +59,9 @@ namespace Tmpl8
 			y = 0;
 			vy = -vy * resistance;
 		}
-		if (y > ScreenHeight - 2 * radius)
+		if (y > ScreenHeight - radius)
 		{
-			y = ScreenHeight - 2 * radius;
+			y = ScreenHeight - radius;
 			vy = -vy * resistance;
 		}
 	}

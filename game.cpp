@@ -9,7 +9,7 @@ namespace Tmpl8
 {
 	vec2 mousePos;
 	vec2 cursor;
-	clock_t playTime;
+	float playTime;
 
 	void Game::MouseMove(int x, int y)
 	{
@@ -44,7 +44,14 @@ namespace Tmpl8
 	//}
 
 
-	
+	Ball* ball01{ nullptr };
+	Ball* ball02{ nullptr };
+	Ball* ball03{ nullptr };
+	Ball* ball04{ nullptr };
+	Ball* ball05{ nullptr };
+	Ball* ball06{ nullptr };
+
+
 
 	void Game::Init()
 	{
@@ -53,11 +60,12 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
-		Ball* playerBall = new Ball(100, 100, 10, 12, -10, 5, screen);
-
-		playerBall->DrawLine();
-
-		//CreateBall(ScreenWidth / 2, 350, 100);
+		ball01 = new Ball(ScreenWidth / 2, 100, 75, 12, -10, screen, playTime);
+		ball02 = new Ball(ScreenWidth / 2, 200, 100, 10, -12, screen, playTime);
+		ball03 = new Ball(ScreenWidth / 2, 300, 125, 12, -14, screen, playTime);
+		ball04 = new Ball(ScreenWidth / 2, 400, 150, 14, -10, screen, playTime);
+		ball05 = new Ball(ScreenWidth / 2, 500, 175, 14, -14, screen, playTime);
+		ball06 = new Ball(ScreenWidth / 2, 600, 200, 10, -10, screen, playTime);
 
 	}
 	void Game::Shutdown()
@@ -66,20 +74,32 @@ namespace Tmpl8
 	}
 	void Game::Tick(float deltaTime)
 	{
-
-		playTime = clock()/CLOCKS_PER_SEC;
-		//Ball::t = playTime;
-
-		//std::cout << playTime << std::endl;
-
-
-		//screen->Clear(0x000000);
 		//Button(ScreenWidth / 2, 250, 100, 30);
 		//Button(ScreenWidth / 2, 300, 100, 30);
 
-		/*Ball bal01;
-		bal01.CreateBall(ScreenWidth / 2, 350, 100, screen);*/
-		//MoveBall();
+
+
+
+		playTime = 420;
+
+		//playTime = playTime + deltaTime;
+		//std::cout << playTime / 1000 << std::endl;
+
+		screen->Clear(0x000000);
+		ball01->DisplayBall();
+		ball02->DisplayBall();		
+		ball03->DisplayBall();
+		ball04->DisplayBall();
+		ball05->DisplayBall();
+		ball06->DisplayBall();
+
+		ball01->MoveBall();
+		ball02->MoveBall();
+		ball03->MoveBall();
+		ball04->MoveBall();
+		ball05->MoveBall();
+		ball06->MoveBall();
+
 
 	}
 
