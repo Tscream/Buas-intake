@@ -1,14 +1,15 @@
 #include "game.h"
 #include "surface.h"
 #include "template.h"
+#include "ball.h"
 #include "iostream"
 #include <Windows.h>
-
 
 namespace Tmpl8
 {
 	vec2 mousePos;
 	vec2 cursor;
+	clock_t playTime;
 
 	void Game::MouseMove(int x, int y)
 	{
@@ -42,23 +43,8 @@ namespace Tmpl8
 	//	screen->Surface::Bar(posx - width/2, posy - height/2, posx + width/2, posy + height/2, 0xffffff);
 	//}
 
-	static Sprite ball(new Surface("assets/ball.png"), 1);
 
-	void Game::CreateBall(float xpos, float ypos, float radius)
-	{
-		ball.DrawScaled(xpos, ypos, radius, radius, screen);
-
-		float vx = (7);
-		float vy = (10);
-		float mass = radius / 50;
-	}
-
-	void Game::MoveBall() 
-	{
-		
-	}
-
-
+	
 
 	void Game::Init()
 	{
@@ -66,6 +52,9 @@ namespace Tmpl8
 		cursor.y = 20; //visual cursor height
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
+
+		//CreateBall(ScreenWidth / 2, 350, 100);
+
 	}
 	void Game::Shutdown()
 	{
@@ -73,13 +62,20 @@ namespace Tmpl8
 	}
 	void Game::Tick(float deltaTime)
 	{
-		
-		screen->Clear(0x000000);
+
+		playTime = clock()/CLOCKS_PER_SEC;
+		//Ball::t = playTime;
+
+		//std::cout << playTime << std::endl;
+
+
+		//screen->Clear(0x000000);
 		//Button(ScreenWidth / 2, 250, 100, 30);
 		//Button(ScreenWidth / 2, 300, 100, 30);
 
-		CreateBall(100, ScreenHeight / 2, 100);
-		
+		Ball bal01;
+		bal01.CreateBall(ScreenWidth / 2, 350, 100, screen);
+		//MoveBall();
 
 	}
 
