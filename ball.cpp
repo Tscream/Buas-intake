@@ -7,43 +7,27 @@
 namespace Tmpl8
 {
 
-	float x;
-	float y;
-	float radius;
-
-	float vx;
-	float vy;
-	float mass;
-	float gravity;
-	float resistance = 0.99;
-
-	Surface* screen;
-
-	//Sprite image;
-
-	void Ball::CreateBall(float _xpos, float _ypos, float _radius, Surface* _screen)
+	// Constructor. This will assign all the values the object needs when you create an instance of this class.
+	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, float _gravity, Surface* _screen)
 	{
 		x = _xpos;
 		y = _ypos;
 		radius = _radius;
-
-		//image.DrawScaled(x, y, 2 * radius, 2 * radius, Game::screen);
-
-		screen = _screen;
-
-		screen->Surface::Bar(100, 100, 500, 500, 0x000000);
-
-		vx = 12;
-		vy = -10;
+		vx = _vx;
+		vy = _vy;
 		mass = radius / 50;
-
+		gravity = _gravity;
+		screen = _screen;
 	}
 
-	void Ball::DisplayBall()
-	{
-		gravity = 0.981;
+	// The destructor deallocates the resources allocated in the constructor. So basically it frees up the memory taken up by the constructor.
+	Ball::~Ball() {};
 
-		//image.DrawScaled(x, y, 2 * radius, 2 * radius, Game::screen);
+	// You can write setters and getters if you want to change your values.
+
+	void Ball::DrawLine()
+	{
+		screen->Bar(100, 100, 500, 500, 0x000000);
 	}
 
 	void Ball::MoveBall()
@@ -75,5 +59,4 @@ namespace Tmpl8
 			vy = -vy * resistance;
 		}
 	}
-
 }

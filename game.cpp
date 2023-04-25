@@ -53,6 +53,10 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
+		Ball* playerBall = new Ball(100, 100, 10, 12, -10, 5, screen);
+
+		playerBall->DrawLine();
+
 		//CreateBall(ScreenWidth / 2, 350, 100);
 
 	}
@@ -73,8 +77,8 @@ namespace Tmpl8
 		//Button(ScreenWidth / 2, 250, 100, 30);
 		//Button(ScreenWidth / 2, 300, 100, 30);
 
-		Ball bal01;
-		bal01.CreateBall(ScreenWidth / 2, 350, 100, screen);
+		/*Ball bal01;
+		bal01.CreateBall(ScreenWidth / 2, 350, 100, screen);*/
 		//MoveBall();
 
 	}
