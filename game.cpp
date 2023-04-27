@@ -60,12 +60,12 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
-		ball01 = new Ball(ScreenWidth / 2, 100, 75, 12, -10, screen, playTime);
-		ball02 = new Ball(ScreenWidth / 2, 200, 100, 10, -12, screen, playTime);
-		ball03 = new Ball(ScreenWidth / 2, 300, 125, 12, -14, screen, playTime);
-		ball04 = new Ball(ScreenWidth / 2, 400, 150, 14, -10, screen, playTime);
-		ball05 = new Ball(ScreenWidth / 2, 500, 175, 14, -14, screen, playTime);
-		ball06 = new Ball(ScreenWidth / 2, 600, 200, 10, -10, screen, playTime);
+		ball01 = new Ball(ScreenWidth / 2, 100, 75, 12, -10, screen, &playTime);
+		//ball02 = new Ball(ScreenWidth / 2, 200, 100, 10, -12, screen, playTime);
+		//ball03 = new Ball(ScreenWidth / 2, 300, 125, 12, -14, screen, playTime);
+		//ball04 = new Ball(ScreenWidth / 2, 400, 150, 14, -10, screen, playTime);
+		//ball05 = new Ball(ScreenWidth / 2, 500, 175, 14, -14, screen, playTime);
+		//ball06 = new Ball(ScreenWidth / 2, 600, 200, 10, -10, screen, playTime);
 
 	}
 	void Game::Shutdown()
@@ -78,27 +78,23 @@ namespace Tmpl8
 		//Button(ScreenWidth / 2, 300, 100, 30);
 
 
+		playTime = playTime + deltaTime;
 
-
-		playTime = 420;
-
-		//playTime = playTime + deltaTime;
-		//std::cout << playTime / 1000 << std::endl;
 
 		screen->Clear(0x000000);
 		ball01->DisplayBall();
-		ball02->DisplayBall();		
-		ball03->DisplayBall();
-		ball04->DisplayBall();
-		ball05->DisplayBall();
-		ball06->DisplayBall();
+		//ball02->DisplayBall();		
+		//ball03->DisplayBall();
+		//ball04->DisplayBall();
+		//ball05->DisplayBall();
+		//ball06->DisplayBall();
 
 		ball01->MoveBall();
-		ball02->MoveBall();
-		ball03->MoveBall();
-		ball04->MoveBall();
-		ball05->MoveBall();
-		ball06->MoveBall();
+		//ball02->MoveBall();
+		//ball03->MoveBall();
+		//ball04->MoveBall();
+		//ball05->MoveBall();
+		//ball06->MoveBall();
 
 
 	}

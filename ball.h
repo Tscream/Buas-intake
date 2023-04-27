@@ -5,7 +5,7 @@ namespace Tmpl8 {
 	class Ball
 	{
 	public:
-		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float _time);
+		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time);
 		~Ball();
 		void DisplayBall();
 		void MoveBall();

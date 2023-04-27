@@ -7,10 +7,10 @@
 namespace Tmpl8
 {
 	static Sprite ballTexture(new Surface("assets/ball.png"), 1);
-	float ptr;
+	float* ptr;
 
 	// Constructor. This will assign all the values the object needs when you create an instance of this class.
-	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float _time)
+	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time)
 	{
 		x = _xpos;
 		y = _ypos;
@@ -33,7 +33,7 @@ namespace Tmpl8
 	{
 		ballTexture.DrawScaled(x, y, radius, radius, screen);
 
-		std::cout << ptr << std::endl;
+		std::cout << *ptr / 1000 << std::endl;
 	}
 
 	void Ball::MoveBall()
