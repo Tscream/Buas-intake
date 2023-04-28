@@ -18,10 +18,11 @@ namespace Tmpl8 {
 		float mass;
 		float gravity = 9.81;
 		float resistance = 0.85;
+		
 
 	private:
 		Surface* screen{nullptr};
-		float time;
+		float* timeptr;
 
 		
 	};

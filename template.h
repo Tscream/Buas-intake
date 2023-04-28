@@ -15,7 +15,8 @@
 //const DWORD height = GetSystemMetrics(SM_CYSCREEN);
 const int ScreenHeight = 1000; //minimum height = 500px
 
-const int ScreenWidth = ScreenHeight / 16 * 9; //minimum width = 300px
+//const int ScreenWidth = ScreenHeight / 16 * 9; //minimum width = 300px
+const int ScreenWidth = 1800;
 // #define FULLSCREEN
 // #define ADVANCEDGL	// faster if your system supports it. Switches SDL2's texture buffer out for OpenGL texture buffer with mappings to CPU Memory. 
 

@@ -17,6 +17,9 @@ namespace Tmpl8
 	Ball* ball01{ nullptr };
 	Ball* ball02{ nullptr };
 
+	Ball* balls[]{ nullptr };
+	int ballCount;
+
 	void Game::MouseMove(int x, int y)
 	{
 		mousePos.x = mousePos.x + x;
@@ -40,9 +43,12 @@ namespace Tmpl8
 
 	void Game::MouseDown(int button)
 	{
-		std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
+		//std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
 
-		
+		//balls[ballCount] = new Ball(mousePos.x, mousePos.y, 15, 0, 0, screen, &playTime);
+		ballCount = ballCount + 1;
+
+		//std::cout << balls << std::endl;
 	}
 	
 	void Game::Init()
@@ -52,8 +58,8 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
-		ball01 = new Ball(ScreenWidth / 2, 100, 100, 12, -10, screen, &playTime);
-		ball02 = new Ball(ScreenWidth / 2, ScreenHeight - 150, 125, 0, 100, screen, &playTime);
+		ball01 = new Ball(ScreenWidth / 2 - 100, ScreenHeight / 2, 100, 15, -100, screen, &playTime);
+		ball02 = new Ball(ScreenWidth / 2 - 75, ScreenHeight - 125 - 150, 150, 0, -100, screen, &playTime);
 	}
 
 	void Game::Shutdown()
@@ -63,6 +69,10 @@ namespace Tmpl8
 
 	void Game::Tick(float deltaTime)
 	{
+
+		std::cout << ballCount << std::endl;
+
+
 		if (slomoDebug == 0) 
 		{
 			slomoDebug = 0;
@@ -74,17 +84,14 @@ namespace Tmpl8
 			screen->Bar(ScreenWidth / 2 - 25, ScreenHeight - 125, ScreenWidth / 2 + 25, ScreenHeight - 75, 0xffffff);
 			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff);
 
-
-			ball01->DisplayBall();
 			ball01->MoveBall();
+			ball01->DisplayBall();
 
 			if (ball02) {
-				ball02->DisplayBall();
 				ball02->MoveBall();
+				ball02->DisplayBall();
+				Game::Colission(ball01, ball02);
 			}
-
-			Game::Colission(ball01, ball02);
-
 		}
 		else
 		{
@@ -95,13 +102,16 @@ namespace Tmpl8
 
 	void Game::Colission(Ball* b1, Ball* b2)
 	{
-
 		float dx = b2->x - b1->x; //difference in X
 		float dy = b2->y - b1->y; //difference in X
 		float dist = sqrt(dx * dx + dy * dy); //Pytagoras distance calculation a2 + b2 = c2
 
-		if (dist < b1->radius + b2->radius) //if distance is smaller that the radius of both balls combined it's called collision
+		screen->Line(b1->x, b1->y, b2->x, b2->y, 0x00ff00);
+
+		if (dist < b1->radius / 2 + b2->radius / 2) //if distance is smaller that the radius of both balls combined it's called collision
 		{
+			std::cout << dist << std::endl;
+
 			float angle = atan2(dy, dx);
 			float _sin = sin(angle);
 			float _cos = cos(angle);
