@@ -3,6 +3,7 @@
 namespace Tmpl8 {
 
 	class Surface;
+	class Ball;
 	class Game
 	{
 	public:
@@ -14,6 +15,7 @@ namespace Tmpl8 {
 		void Init();
 		void Shutdown();
 		void Tick(float deltaTime);
+		void Colission(Ball* b1, Ball* b2);
 		void CursorVisual(float x, float y);
 		//void Button(float posx, float posy, float width, float height);
 		void MouseUp(int button) { /* implement if you want to detect mouse button presses */ }

@@ -9,9 +9,6 @@ namespace Tmpl8 {
 		~Ball();
 		void DisplayBall();
 		void MoveBall();
-	private:
-		Surface* screen{nullptr};
-		float time;
 
 		float x;
 		float y;
@@ -19,8 +16,14 @@ namespace Tmpl8 {
 		float vx;
 		float vy;
 		float mass;
-		float gravity = 5;
-		float resistance = 0.99;
+		float gravity = 9.81;
+		float resistance = 0.85;
+
+	private:
+		Surface* screen{nullptr};
+		float time;
+
+		
 	};
 
 };

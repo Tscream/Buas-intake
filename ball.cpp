@@ -7,7 +7,7 @@
 namespace Tmpl8
 {
 	static Sprite ballTexture(new Surface("assets/ball.png"), 1);
-	float* ptr;
+	float* timeptr;
 
 	// Constructor. This will assign all the values the object needs when you create an instance of this class.
 	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time)
@@ -19,28 +19,23 @@ namespace Tmpl8
 		vy = _vy;
 		mass = radius / 50;
 		screen = _screen;
-		ptr = _time;
-		
-
+		timeptr = _time;
 	}
 
 	// The destructor deallocates the resources allocated in the constructor. So basically it frees up the memory taken up by the constructor.
 	Ball::~Ball() {};
 
 
-
 	void Ball::DisplayBall()
 	{
 		ballTexture.DrawScaled(x, y, radius, radius, screen);
 
-		std::cout << *ptr / 1000 << std::endl;
+		//std::cout << *timeptr << std::endl;
 	}
 
 	void Ball::MoveBall()
 	{
-		//vy = vy + (0.5 * gravity * (t * t));
-
-		//vy = vy + gravity;
+		vy = vy + (0.5 * gravity);
 
 		x = x + vx;
 		y = y + vy;
