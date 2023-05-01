@@ -9,20 +9,23 @@ namespace Tmpl8
 	static Sprite ballTexture(new Surface("assets/ball.png"), 1);
 
 	// Constructor. This will assign all the values the object needs when you create an instance of this class.
-	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time)
+	Ball::Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _deltatime)
 	{
 		x = _xpos;
 		y = _ypos;
 		radius = _radius;
 		vx = _vx;
 		vy = _vy;
-		mass = radius / 50;
+		mass = radius * 2;
 		screen = _screen;
-		timeptr = _time;
+		deltatimeptr = _deltatime;
 	}
 
 	// The destructor deallocates the resources allocated in the constructor. So basically it frees up the memory taken up by the constructor.
-	Ball::~Ball() {};
+	Ball::~Ball()
+	{
+		std::cout << "Destruct" << std::endl;
+	};
 
 
 	void Ball::DisplayBall()
@@ -34,10 +37,10 @@ namespace Tmpl8
 
 	void Ball::MoveBall()
 	{
-		vy = vy + (0.5 * gravity);
+		vy = vy + (0.5 * gravity) * *deltatimeptr;
 
-		x = x + vx;
-		y = y + vy;
+		x = x + vx * *deltatimeptr;
+		y = y + vy * *deltatimeptr;
 		
 		if (x > ScreenWidth - radius / 2)
 		{
@@ -60,4 +63,16 @@ namespace Tmpl8
 			vy = -vy * resistance;
 		}
 	}
+
+	bool Ball::EndOfLife(float _time)
+	{
+		currentLifeTime = currentLifeTime + _time / 1000;
+
+		if (currentLifeTime >= lifeTime) 
+		{
+			return true;
+		}
+		return false;
+	}
+
 }

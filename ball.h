@@ -9,6 +9,7 @@ namespace Tmpl8 {
 		~Ball();
 		void DisplayBall();
 		void MoveBall();
+		bool EndOfLife(float _time);
 
 		float x;
 		float y;
@@ -18,11 +19,13 @@ namespace Tmpl8 {
 		float mass;
 		float gravity = 9.81;
 		float resistance = 0.85;
+		float lifeTime = 5;
 		
 
 	private:
 		Surface* screen{nullptr};
-		float* timeptr;
+		float* deltatimeptr;
+		float currentLifeTime = 0;
 
 		
 	};

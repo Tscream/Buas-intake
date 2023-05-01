@@ -3,22 +3,21 @@
 #include "template.h"
 #include "ball.h"
 #include "iostream"
+#include "vector"
 #include <Windows.h>
 
 namespace Tmpl8
 {
 	vec2 mousePos;
 	vec2 cursor;
-	float playTime;
+	float deltaTime;
 
 	float slomoDebug;
 
 
 	Ball* ball01{ nullptr };
 	Ball* ball02{ nullptr };
-
-	Ball* balls[]{ nullptr };
-	int ballCount;
+	std::vector<Ball*> balls;
 
 	void Game::MouseMove(int x, int y)
 	{
@@ -42,13 +41,17 @@ namespace Tmpl8
 	}
 
 	void Game::MouseDown(int button)
-	{
+	{ 
 		//std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
-
-		//balls[ballCount] = new Ball(mousePos.x, mousePos.y, 15, 0, 0, screen, &playTime);
-		ballCount = ballCount + 1;
-
+		balls.push_back(new Ball(mousePos.x, mousePos.y, 15, 0, 0, screen, &deltaTime));
 		//std::cout << balls << std::endl;
+
+
+
+
+
+
+
 	}
 	
 	void Game::Init()
@@ -58,8 +61,9 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
-		ball01 = new Ball(ScreenWidth / 2 - 100, ScreenHeight / 2, 100, 15, -100, screen, &playTime);
-		ball02 = new Ball(ScreenWidth / 2 - 75, ScreenHeight - 125 - 150, 150, 0, -100, screen, &playTime);
+		//balls[ballindex] = new Ball(ScreenWidth / 2 - 100, ScreenHeight / 2, 100, 10, 0, screen, &deltaTime);
+		//ballindex++;
+		//ball02 = new Ball(ScreenWidth / 2 - 75, ScreenHeight - 125 - 150, 150, 0, 0, screen, &playTime);
 	}
 
 	void Game::Shutdown()
@@ -67,30 +71,38 @@ namespace Tmpl8
 		//save highscore
 	}
 
-	void Game::Tick(float deltaTime)
+	void Game::Tick(float _deltaTime)
 	{
 
-		std::cout << ballCount << std::endl;
+		//std::cout << ballCount << std::endl;
 
 
 		if (slomoDebug == 0) 
 		{
 			slomoDebug = 0;
 
-			playTime = playTime + (deltaTime / 1000);
+			deltaTime = _deltaTime / 50;
 
 			screen->Clear(0xffffff);
 
 			screen->Bar(ScreenWidth / 2 - 25, ScreenHeight - 125, ScreenWidth / 2 + 25, ScreenHeight - 75, 0xffffff);
 			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff);
 
-			ball01->MoveBall();
-			ball01->DisplayBall();
 
 			if (ball02) {
 				ball02->MoveBall();
 				ball02->DisplayBall();
 				Game::Colission(ball01, ball02);
+			}
+
+			for (int i = 0; i < balls.size(); i++) 
+			{
+				balls[i]->MoveBall();
+				balls[i]->DisplayBall();
+				if (balls[i]->EndOfLife(_deltaTime)) {
+					balls.erase(balls.begin() + i);
+					//delete balls[i];
+				}
 			}
 		}
 		else
