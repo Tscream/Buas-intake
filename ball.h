@@ -1,4 +1,5 @@
 #pragma once
+#include "vector"
 
 namespace Tmpl8 {
 
@@ -8,7 +9,8 @@ namespace Tmpl8 {
 		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time);
 		~Ball();
 		void DisplayBall();
-		void MoveBall();
+		void MoveTarget();
+		void MoveBullet(Ball** elements, int _index);
 		bool EndOfLife(float _time);
 
 		float x;
@@ -19,7 +21,7 @@ namespace Tmpl8 {
 		float mass;
 		float gravity = 9.81;
 		float resistance = 0.85;
-		float lifeTime = 5;
+		float lifeTime = 2;
 		
 
 	private:

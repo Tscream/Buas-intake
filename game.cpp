@@ -10,13 +10,11 @@ namespace Tmpl8
 {
 	vec2 mousePos;
 	vec2 cursor;
-	float deltaTime;
-
+	float deltaTime = 0;
 	float slomoDebug;
 
 
-	Ball* ball01{ nullptr };
-	Ball* ball02{ nullptr };
+	Ball* target;
 	std::vector<Ball*> balls;
 
 	void Game::MouseMove(int x, int y)
@@ -37,21 +35,13 @@ namespace Tmpl8
 		float xPos2 = x + cursor.x / 2;
 		float yPos2 = y + cursor.y / 2;
 
-		screen->Surface::Bar(xPos1, yPos1, xPos2, yPos2, 0x000000);
+		screen->Surface::Bar(xPos1, yPos1, xPos2, yPos2, 0xffffff);
 	}
 
 	void Game::MouseDown(int button)
 	{ 
 		//std::cout << "x: " << mousePos.x << " y: " << mousePos.y << std::endl;
-		balls.push_back(new Ball(mousePos.x, mousePos.y, 15, 0, 0, screen, &deltaTime));
-		//std::cout << balls << std::endl;
-
-
-
-
-
-
-
+		balls.push_back(new Ball(mousePos.x, mousePos.y, 50, 0, -100, screen, &deltaTime));
 	}
 	
 	void Game::Init()
@@ -61,9 +51,7 @@ namespace Tmpl8
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
 		std::cout << height << std::endl;
 
-		//balls[ballindex] = new Ball(ScreenWidth / 2 - 100, ScreenHeight / 2, 100, 10, 0, screen, &deltaTime);
-		//ballindex++;
-		//ball02 = new Ball(ScreenWidth / 2 - 75, ScreenHeight - 125 - 150, 150, 0, 0, screen, &playTime);
+		target = new Ball(ScreenWidth / 2, 100, 100, 0, 0, screen, &deltaTime);
 	}
 
 	void Game::Shutdown()
@@ -77,31 +65,34 @@ namespace Tmpl8
 		//std::cout << ballCount << std::endl;
 
 
-		if (slomoDebug == 0) 
+		if (slomoDebug == 0)
 		{
 			slomoDebug = 0;
 
 			deltaTime = _deltaTime / 50;
 
-			screen->Clear(0xffffff);
+			screen->Clear(0x000000);
 
+			target->MoveTarget();
+			target->DisplayBall();
+
+			screen->Bar(0, ScreenHeight - 150, ScreenWidth, ScreenHeight - 1, 0xff00ff);
 			screen->Bar(ScreenWidth / 2 - 25, ScreenHeight - 125, ScreenWidth / 2 + 25, ScreenHeight - 75, 0xffffff);
 			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff);
 
 
-			if (ball02) {
-				ball02->MoveBall();
-				ball02->DisplayBall();
-				Game::Colission(ball01, ball02);
-			}
-
-			for (int i = 0; i < balls.size(); i++) 
+			for (int i = 0; i < balls.size(); i++)
 			{
-				balls[i]->MoveBall();
-				balls[i]->DisplayBall();
-				if (balls[i]->EndOfLife(_deltaTime)) {
+				/*if (balls[i]->EndOfLife(_deltaTime)) {
 					balls.erase(balls.begin() + i);
-					//delete balls[i];
+					return;
+				}*/
+				
+				balls[i]->MoveBullet(balls.data(), i);
+				balls[i]->DisplayBall();
+				if (balls.size() >= 1)
+				{
+					Game::Colission(target, balls[i], i);
 				}
 			}
 		}
@@ -112,7 +103,7 @@ namespace Tmpl8
 
 	}
 
-	void Game::Colission(Ball* b1, Ball* b2)
+	void Game::Colission(Ball* b1, Ball* b2, int _index)
 	{
 		float dx = b2->x - b1->x; //difference in X
 		float dy = b2->y - b1->y; //difference in X
@@ -128,6 +119,11 @@ namespace Tmpl8
 			float _sin = sin(angle);
 			float _cos = cos(angle);
 
+			float x1 = 0;
+			float y1 = 0;
+			float x2 = dx * _cos + dy * _sin;
+			float y2 = dy * _cos + dx * _sin;
+
 			// rotate velocity
 			float vx1 = b1->vx * _cos + b1->vy * _sin;
 			float vy1 = b1->vy * _cos - b1->vx * _sin;
@@ -142,11 +138,33 @@ namespace Tmpl8
 			vx1 = vx1final;
 			vx2 = vx2final;
 
+			/*float absVelocity = abs(vx1) + abs(vx2);
+			float overlap = (b1->radius + b2->radius) - abs(x1 - x2);
+			x1 += vx1 / absVelocity * overlap;
+			x2 += vx2 / absVelocity * overlap;
+
+
+			float x1final = x1 * _cos - y1 * _sin;
+			float y1final = y1 * _cos + x1 * _sin;
+			float x2final = x2 * _cos - y2 * _sin;
+			float y2final = y2 * _cos + x2 * _sin;*/
+
+
+			// finally compute the new absolute positions
+			/*b2->x = b1->x + x2final;
+			b2->y = b1->y + y2final;
+
+			b1->x = b1->x + x1final;
+			b1->y = b1->y + y1final;*/
+
+
 			//rotate vel back
 			b1->vx = vx1 * _cos - vy1 * _sin;
 			b1->vy = vy1 * _cos + vx1 * _sin;
 			b2->vx = vx2 * _cos - vy2 * _sin;
 			b2->vy = vy2 * _cos + vx2 * _sin;
+
+			balls.erase(balls.begin() + _index);
 		}
 	}
 

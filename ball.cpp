@@ -31,11 +31,10 @@ namespace Tmpl8
 	void Ball::DisplayBall()
 	{
 		ballTexture.DrawScaled(x - radius / 2, y - radius / 2, radius, radius, screen);
-
-		//std::cout << *timeptr << std::endl;
+		//screen->LoadImage("assets/circle.svg");
 	}
 
-	void Ball::MoveBall()
+	void Ball::MoveTarget()
 	{
 		vy = vy + (0.5 * gravity) * *deltatimeptr;
 
@@ -56,6 +55,41 @@ namespace Tmpl8
 		{
 			y = 0 + radius / 2;
 			vy = -vy * resistance;
+		}
+		if (y > ScreenHeight - radius / 2)
+		{
+			//wait 1 sec
+			vx = 0;
+			vy = 0;
+			x = ScreenWidth / 2;
+			y = 100;
+		}
+	}
+
+	void Ball::MoveBullet(Ball** elements, int _index) //std::vector<Ball*>* _ballarr
+	{
+		vy = vy + (0.5 * gravity) * *deltatimeptr;
+
+		x = x + vx * *deltatimeptr;
+		y = y + vy * *deltatimeptr;
+
+		std::cout << elements[0] << std::endl;
+
+		std::vector<Ball*> ptr{ *elements };
+
+		if (x > ScreenWidth - radius / 2)
+		{
+			ptr.erase(ptr.begin() + _index);
+		}
+		if (x < 0 + radius / 2)
+		{
+			x = 0 + radius / 2;
+			vx = -vx * resistance;
+		}
+		if (y < 0 + radius / 2)
+		{
+			ptr.erase(ptr.begin() + _index);
+
 		}
 		if (y > ScreenHeight - radius / 2)
 		{
