@@ -17,6 +17,7 @@ namespace Tmpl8
 	float playTime = 0;
 	float deltatime = 0;
 	float slomoDebug;
+	float scoreSize;
 
 	Ball* target;
 	std::vector<Ball*> balls;
@@ -63,6 +64,7 @@ namespace Tmpl8
 		turretPos = { ScreenWidth / 2 ,ScreenHeight - 100 };
 		turretSize = { 50,50 };
 		bulletSpeed = 15;
+		scoreSize = 40;
 
 
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
@@ -114,6 +116,12 @@ namespace Tmpl8
 			screen->Bar(turretPos.x - turretSize.x / 2, turretPos.y - turretSize.y / 2, turretPos.x + turretSize.x / 2, turretPos.y + turretSize.y / 2, 0xffffff); //turret
 
 			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff); //line from turret to mouse
+
+			screen->Print("00", ScreenWidth/2 - scoreSize * 5.5, ScreenHeight/2 - scoreSize * 2.5, 0xffffff, scoreSize);
+
+			screen->Line(ScreenWidth / 2, 0, ScreenWidth / 2, ScreenHeight, 0xffff00);
+			screen->Line(0, ScreenHeight/2, ScreenWidth, ScreenHeight/2, 0xffff00);
+
 		}
 		else
 		{
