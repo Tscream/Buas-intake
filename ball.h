@@ -6,12 +6,12 @@ namespace Tmpl8 {
 	class Ball
 	{
 	public:
-		Ball(float _xpos, float _ypos, float _radius, float _vx, float _vy, Surface* _screen, float* _time);
+		Ball(float _xpos, float _ypos, float _radius, float _mass, float _vx, float _vy, Surface* _screen, float* _time, float* _delta);
 		~Ball();
 		void DisplayBall();
 		void MoveTarget();
-		void MoveBullet(Ball** elements, int _index);
-		bool EndOfLife(float _time);
+		void MoveBullet();
+		bool EndOfLife();
 
 		float x;
 		float y;
@@ -21,13 +21,16 @@ namespace Tmpl8 {
 		float mass;
 		float gravity = 9.81;
 		float resistance = 0.85;
-		float lifeTime = 2;
+		float spawnTime;
+		float lifespan = 5;
+		float currentLifeTime = 0;
+		const float physicsScaler = 75; //multiplies all physics with 50 so that it's 50 pixels per meter
 		
 
 	private:
 		Surface* screen{nullptr};
-		float* deltatimeptr;
-		float currentLifeTime = 0;
+		float* timeptr;
+		float* deltaptr;
 
 		
 	};
