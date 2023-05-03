@@ -5,6 +5,8 @@
 #include "iostream"
 #include "vector"
 #include <Windows.h>
+#include <sstream>
+
 
 namespace Tmpl8
 {
@@ -18,6 +20,8 @@ namespace Tmpl8
 	float deltatime = 0;
 	float slomoDebug;
 	float scoreSize;
+	int score;
+	char* scoreText;
 
 	Ball* target;
 	std::vector<Ball*> balls;
@@ -64,7 +68,8 @@ namespace Tmpl8
 		turretPos = { ScreenWidth / 2 ,ScreenHeight - 100 };
 		turretSize = { 50,50 };
 		bulletSpeed = 15;
-		scoreSize = 40;
+		scoreSize = 3;
+		scoreText = "01";
 
 
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
@@ -117,10 +122,10 @@ namespace Tmpl8
 
 			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff); //line from turret to mouse
 
-			screen->Print("00", ScreenWidth/2 - scoreSize * 5.5, ScreenHeight/2 - scoreSize * 2.5, 0xffffff, scoreSize);
+			screen->Print(scoreText, ScreenWidth / 2 - scoreSize * 5.5, ScreenHeight / 2 - scoreSize * 2.5, 0xffffff, scoreSize);
 
-			screen->Line(ScreenWidth / 2, 0, ScreenWidth / 2, ScreenHeight, 0xffff00);
-			screen->Line(0, ScreenHeight/2, ScreenWidth, ScreenHeight/2, 0xffff00);
+			//screen->Line(ScreenWidth / 2, 0, ScreenWidth / 2, ScreenHeight, 0xffff00);
+			//screen->Line(0, ScreenHeight/2, ScreenWidth, ScreenHeight/2, 0xffff00);
 
 		}
 		else
@@ -128,6 +133,7 @@ namespace Tmpl8
 			slomoDebug++;
 		}
 	}
+
 
 	void Game::Colission(Ball* b1, Ball* b2, int _index)
 	{
@@ -188,13 +194,33 @@ namespace Tmpl8
 			b2->vx = vx2 * _cos - vy2 * _sin;
 			b2->vy = vy2 * _cos + vx2 * _sin;
 
+			//score++;
+
+			//std::string str = std::to_string(score);
+
+			//char* bar = new char[str.length()];
+
+			//std::strcpy(bar, str.c_str()); // Copy the contents of the string to the char array
+
+			//bar[str.length()] = '\0'; // Add the null character
+
+			//scoreText = bar;
+
+			//std::cout << bar << std::endl;
+
+
+
+			score++;
+
+			std::string str = std::to_string(score);
+
+			scoreText = new char[str.length()];
+
+			std::strcpy(scoreText, str.c_str());
+
+			scoreText[str.length()] = '\0';
+
 			balls.erase(balls.begin() + _index);
 		}
 	}
-
-	
-
-	
-	
-
 };

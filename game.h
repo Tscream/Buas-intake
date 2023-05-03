@@ -18,6 +18,8 @@ namespace Tmpl8 {
 		void MouseMove(int x, int y);
 		void KeyUp(int key) { /* implement if you want to handle keys */ }
 		void KeyDown(int key) { /* implement if you want to handle keys */ }
+
+		void incrementAndOutput(int num, char* output);
 	private:
 		Surface* screen;
 	};
