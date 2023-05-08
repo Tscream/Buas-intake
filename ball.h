@@ -29,6 +29,7 @@ namespace Tmpl8 {
 
 	private:
 		Surface* screen{nullptr};
+		Game* game{ nullptr };
 		float* timeptr;
 		float* deltaptr;
 

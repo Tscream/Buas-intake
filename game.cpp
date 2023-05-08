@@ -7,13 +7,13 @@
 #include <Windows.h>
 #include <sstream>
 
-
 namespace Tmpl8
 {
 	vec2 mousePos;
 	vec2 mouseSize;
 	vec2 turretPos;
 	vec2 turretSize;
+	float barHeight;
 	float bulletSpeed;
 	float shootCooldown;
 	float playTime = 0;
@@ -21,7 +21,9 @@ namespace Tmpl8
 	float slomoDebug;
 	float scoreSize;
 	int score;
+	int highscore;
 	char* scoreText;
+	char* highscoretext;
 
 	Ball* target;
 	std::vector<Ball*> balls;
@@ -30,10 +32,10 @@ namespace Tmpl8
 	{
 		mousePos.x = mousePos.x + x;
 		mousePos.y = mousePos.y + y;
-		
-		if (mousePos.x > 0 + mouseSize.x/2 && mousePos.x < ScreenWidth - mouseSize.x/2 && mousePos.y > 0 + mouseSize.y/2 && mousePos.y < ScreenHeight - mouseSize.y/2)
+
+		if (mousePos.x > 0 + mouseSize.x / 2 && mousePos.x < ScreenWidth - mouseSize.x / 2 && mousePos.y > 0 + mouseSize.y / 2 && mousePos.y < ScreenHeight - mouseSize.y / 2)
 		{
-			CursorVisual(mousePos.x, mousePos.y);
+			//CursorVisual(mousePos.x, mousePos.y);
 		}
 	}
 
@@ -61,79 +63,59 @@ namespace Tmpl8
 		balls.push_back(new Ball(turretPos.x, turretPos.y, 50, 1, vxnormal * bulletSpeed, vynormal * bulletSpeed, screen, &playTime, &deltatime));
 
 	}
-	
-	void Game::Init()
+
+	void Game::AddScore(int i = 1)
 	{
-		mouseSize = { 20,20 };
-		turretPos = { ScreenWidth / 2 ,ScreenHeight - 100 };
-		turretSize = { 50,50 };
-		bulletSpeed = 15;
-		scoreSize = 3;
-		scoreText = "01";
+		if (i == 0) {
+			std::cout << "score: " << score << std::endl;
+			std::cout << "highscore: " << highscore << std::endl;
 
+			if (highscore < score) {
+				highscore = score;
+				std::string str;
 
-		DWORD height = GetSystemMetrics(SM_CYSCREEN);
-		std::cout << height << std::endl;
-
-		target = new Ball(ScreenWidth / 2, 100, 125, 1, 0, 0, screen, &playTime, &deltatime);
-	}
-
-	void Game::Shutdown()
-	{
-		//save highscore
-	}
-
-	void Game::Tick(float _deltaTime)
-	{
-		if (slomoDebug == 0)
-		{
-			slomoDebug = 0;
-
-			playTime = playTime + _deltaTime / 1000;
-			
-			deltatime = _deltaTime / 1000;
-
-			screen->Clear(0x000000);
-
-
-			for (int i = 0; i < balls.size(); i++)
-			{
-				balls[i]->MoveBullet();
-
-				if (balls[i]->EndOfLife()) {
-					balls.erase(balls.begin() + i);
-					return;
+				if (score < 10) {
+					str = "High score: 00" + std::to_string(highscore);
 				}
-				
-				balls[i]->DisplayBall();
-				
-				if (balls.size() >= 1)
+				if (score < 100 && highscore > 9) {
+					str = "High score: 0" + std::to_string(highscore);
+				}
+				if (score > 100)
 				{
-					Game::Colission(target, balls[i], i);
+					std::cout << "feest" << std::endl;
+					str = "High score: " + std::to_string(highscore);
 				}
 
+				highscoretext = new char[str.length()];
+
+				std::strcpy(highscoretext, str.c_str());
+
+				highscoretext[str.length()] = '\0';	
 			}
 
-			target->MoveTarget();
-			target->DisplayBall();
+			score = 0;
+			
+		}
 
-			//screen->Bar(0, ScreenHeight - 150, ScreenWidth, ScreenHeight - 1, 0xff00ff); //bar
-			screen->Bar(turretPos.x - turretSize.x / 2, turretPos.y - turretSize.y / 2, turretPos.x + turretSize.x / 2, turretPos.y + turretSize.y / 2, 0xffffff); //turret
 
-			screen->Line(ScreenWidth / 2, ScreenHeight - 100, mousePos.x, mousePos.y, 0x0000ff); //line from turret to mouse
+		score = score + i;
 
-			screen->Print(scoreText, ScreenWidth / 2 - scoreSize * 5.5, ScreenHeight / 2 - scoreSize * 2.5, 0xffffff, scoreSize);
+		std::string str;
 
-			//screen->Line(ScreenWidth / 2, 0, ScreenWidth / 2, ScreenHeight, 0xffff00);
-			//screen->Line(0, ScreenHeight/2, ScreenWidth, ScreenHeight/2, 0xffff00);
-
+		if (score < 10) {
+			str = "0" + std::to_string(score);
 		}
 		else
 		{
-			slomoDebug++;
+			str = std::to_string(score);
 		}
-	}
 
+		scoreText = new char[str.length()];
+
+		std::strcpy(scoreText, str.c_str());
+
+		scoreText[str.length()] = '\0';
+	}
 
 	void Game::Colission(Ball* b1, Ball* b2, int _index)
 	{
@@ -141,7 +123,7 @@ namespace Tmpl8
 		float dy = b2->y - b1->y; //difference in X
 		float dist = sqrt(dx * dx + dy * dy); //Pytagoras distance calculation a2 + b2 = c2
 
-		screen->Line(b1->x, b1->y, b2->x, b2->y, 0x00ff00);
+		//screen->Line(b1->x, b1->y, b2->x, b2->y, 0x00ff00);
 
 		if (dist < b1->radius / 2 + b2->radius / 2) //if distance is smaller that the radius of both balls combined it's called collision
 		{
@@ -168,59 +150,95 @@ namespace Tmpl8
 			vx1 = vx1final;
 			vx2 = vx2final;
 
-			/*float absVelocity = abs(vx1) + abs(vx2);
-			float overlap = (b1->radius + b2->radius) - abs(x1 - x2);
-			x1 += vx1 / absVelocity * overlap;
-			x2 += vx2 / absVelocity * overlap;
-
-
-			float x1final = x1 * _cos - y1 * _sin;
-			float y1final = y1 * _cos + x1 * _sin;
-			float x2final = x2 * _cos - y2 * _sin;
-			float y2final = y2 * _cos + x2 * _sin;*/
-
-
-			// finally compute the new absolute positions
-			/*b2->x = b1->x + x2final;
-			b2->y = b1->y + y2final;
-
-			b1->x = b1->x + x1final;
-			b1->y = b1->y + y1final;*/
-
-
 			//rotate vel back
 			b1->vx = vx1 * _cos - vy1 * _sin;
 			b1->vy = vy1 * _cos + vx1 * _sin;
 			b2->vx = vx2 * _cos - vy2 * _sin;
 			b2->vy = vy2 * _cos + vx2 * _sin;
 
-			//score++;
-
-			//std::string str = std::to_string(score);
-
-			//char* bar = new char[str.length()];
-
-			//std::strcpy(bar, str.c_str()); // Copy the contents of the string to the char array
-
-			//bar[str.length()] = '\0'; // Add the null character
-
-			//scoreText = bar;
-
-			//std::cout << bar << std::endl;
-
-
-
-			score++;
-
-			std::string str = std::to_string(score);
-
-			scoreText = new char[str.length()];
-
-			std::strcpy(scoreText, str.c_str());
-
-			scoreText[str.length()] = '\0';
+			Game::AddScore();
 
 			balls.erase(balls.begin() + _index);
 		}
 	}
+
+	void Game::Init()
+	{
+		mouseSize = { 20,20 };
+		barHeight = 150;
+		turretSize = { 50,50 };
+		turretPos = { ScreenWidth / 2 ,ScreenHeight - barHeight / 2 };
+		bulletSpeed = 15;
+		scoreSize = 25;
+		scoreText = "000";
+		highscoretext = "High score: 000";
+
+		DWORD height = GetSystemMetrics(SM_CYSCREEN);
+		std::cout << height << std::endl;
+
+		target = new Ball(ScreenWidth / 2, 100, 125, 1, 0, 0, screen, &playTime, &deltatime);
+	}
+
+	void Game::Shutdown() {}
+
+	void Game::Tick(float _deltaTime)
+	{
+		playTime = playTime + _deltaTime / 1000;
+
+		deltatime = _deltaTime / 1000;
+
+		screen->Clear(0x000000);
+
+		screen->Print(scoreText, ScreenWidth / 2 - scoreSize * 5.5, ScreenHeight / 2 - scoreSize * 2.5 - barHeight, 0xffffff, scoreSize);
+
+		target->MoveTarget();
+		target->DisplayBall();
+
+		screen->Bar(0, ScreenHeight - barHeight, ScreenWidth, ScreenHeight - 1, 0xffffff); //bar
+		
+		screen->Print(highscoretext, 10, ScreenHeight - 30, 0xff0000, 3);
+		screen->Print("Left click to shoot,", 10, 10, 0xffffff, 3);
+		screen->Print("try and hold the ball up!", 10, 35, 0xffffff, 3);
+
+		for (int i = 0; i < balls.size(); i++)
+		{
+			balls[i]->MoveBullet();
+
+			if (balls[i]->EndOfLife()) {
+				balls.erase(balls.begin() + i);
+				return;
+			}
+
+			balls[i]->DisplayBall();
+
+			if (balls.size() >= 1)
+			{
+				Game::Colission(target, balls[i], i);
+			}
+		}
+
+		DrawBarrel(20, 50); //barrel
+		screen->Bar(turretPos.x - turretSize.x / 2, turretPos.y - turretSize.y / 2, turretPos.x + turretSize.x / 2, turretPos.y + turretSize.y / 2, 0x0000ff); //turret
+
+		//screen->Line(ScreenWidth / 2, 0, ScreenWidth / 2, ScreenHeight, 0xffff00);
+		//screen->Line(0, ScreenHeight/2, ScreenWidth, ScreenHeight/2, 0xffff00);
+	}
+
+	void Game::DrawBarrel(int _thicness, float _length)
+	{
+
+		float vx = mousePos.x - turretPos.x;
+		float vy = mousePos.y - turretPos.y;
+		float dist = sqrt(vx * vx + vy * vy);
+
+		float vxnormal = vx / dist;
+		float vynormal = vy / dist;
+
+		for (int i = 0; i < _thicness; i++)
+		{
+			screen->Line(ScreenWidth / 2 + i / 2,	 ScreenHeight - 100,		 ScreenWidth / 2 + (vxnormal * _length) + i / 2,		ScreenHeight - 100 + (vynormal * _length), 0xff0000);
+			screen->Line(ScreenWidth / 2 - i / 2,	 ScreenHeight - 100,		 ScreenWidth / 2 + (vxnormal * _length) - i / 2,		ScreenHeight - 100 + (vynormal * _length), 0xff0000);
+		}
+	}
+
 };

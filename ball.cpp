@@ -7,7 +7,7 @@
 
 namespace Tmpl8
 {
-	static Sprite ballTexture(new Surface("assets/ball.png"), 1);
+	static Sprite ballTexture(new Surface("assets/ballhighres.png"), 1);
 
 	// Constructor. This will assign all the values the object needs when you create an instance of this class.
 	Ball::Ball(float _xpos, float _ypos, float _radius, float _mass, float _vx, float _vy, Surface* _screen, float* _time, float* _delta)
@@ -34,7 +34,6 @@ namespace Tmpl8
 	{
 		ballTexture.DrawScaled(x - radius / 2, y - radius / 2, radius, radius, screen);
 		currentLifeTime = *timeptr - spawnTime;
-		//screen->LoadImage("assets/circle.svg");
 	}
 
 	void Ball::MoveTarget()
@@ -59,15 +58,17 @@ namespace Tmpl8
 			y = 0 + radius / 2;
 			vy = -vy * resistance;
 		}
-		if (y > ScreenHeight - radius / 2)
+		if (y > ScreenHeight - radius / 2 - 150)
 		{
-			y = ScreenHeight - radius / 2;
+			y = ScreenHeight - radius / 2 - 140;
 			vy = -vy * resistance;
 
 			vx = 0;
 			vy = 0;
 			x = ScreenWidth / 2;
-			y = 100;
+			y = 120;
+			game->AddScore(0);
+			
 			//gameover()
 			//wait 1 sec
 		}

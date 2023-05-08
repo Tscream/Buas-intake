@@ -8,6 +8,7 @@ namespace Tmpl8 {
 	{
 	public:
 		void SetTarget(Surface* surface) { screen = surface; }
+		void AddScore(int s);
 		void Init();
 		void Shutdown();
 		void Tick(float deltaTime);
@@ -18,10 +19,11 @@ namespace Tmpl8 {
 		void MouseMove(int x, int y);
 		void KeyUp(int key) { /* implement if you want to handle keys */ }
 		void KeyDown(int key) { /* implement if you want to handle keys */ }
-
-		void incrementAndOutput(int num, char* output);
+		void DrawBarrel(int _thicness, float length);
 	private:
 		Surface* screen;
 	};
+
+	
 
 }; // namespace Tmpl8
