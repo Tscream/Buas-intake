@@ -24,7 +24,7 @@ namespace Tmpl8 {
 		float spawnTime;
 		float lifespan = 5;
 		float currentLifeTime = 0;
-		const float physicsScaler = 75; //multiplies all physics with 50 so that it's 75 pixels per 'meter'
+		const float physicsScaler = 75; //multiplies all physics with 75 so that it's 75 pixels per 'meter'
 		
 
 	private:
