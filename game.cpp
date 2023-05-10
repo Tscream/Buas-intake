@@ -67,22 +67,15 @@ namespace Tmpl8
 	void Game::AddScore(int i = 1)
 	{
 		if (i == 0) {
-			std::cout << "score: " << score << std::endl;
-			std::cout << "highscore: " << highscore << std::endl;
-
 			if (highscore < score) {
 				highscore = score;
 				std::string str;
 
 				if (score < 10) {
-					str = "High score: 00" + std::to_string(highscore);
-				}
-				if (score < 100 && highscore > 9) {
 					str = "High score: 0" + std::to_string(highscore);
 				}
-				if (score > 100)
+				else 
 				{
-					std::cout << "feest" << std::endl;
 					str = "High score: " + std::to_string(highscore);
 				}
 
@@ -170,11 +163,11 @@ namespace Tmpl8
 		turretPos = { ScreenWidth / 2 ,ScreenHeight - barHeight / 2 };
 		bulletSpeed = 15;
 		scoreSize = 25;
-		scoreText = "000";
-		highscoretext = "High score: 000";
+		scoreText = "00";
+		highscoretext = "High score: 00";
 
 		DWORD height = GetSystemMetrics(SM_CYSCREEN);
-		std::cout << height << std::endl;
+		std::cout << "The height of your screen is " << height << " pixels" << std::endl;
 
 		target = new Ball(ScreenWidth / 2, 100, 125, 1, 0, 0, screen, &playTime, &deltatime);
 	}
